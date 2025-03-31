@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import emailjs from "emailjs-com";
 import { useNavigate } from "react-router-dom";
 
 const ContactMe: React.FC = () => {
@@ -7,55 +6,51 @@ const ContactMe: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const sendEmail = (e: React.FormEvent) => {
+  const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (form.current) {
-      emailjs
-        .sendForm(
-          'service_kblcleh',      // Replace with your actual service ID
-          'template_3tkavzg',     // Replace with your actual template ID
-          form.current,
-          'AWbwVlk6ek5gPlbrY'
-        )
-        .then((result) => {
-          console.log('Email successfully sent:', result.text);
-          setIsSubmitted(true);
-          setTimeout(() => navigate('/'), 2000);  // Redirect after 2 seconds
-        })
-        .catch((error) => {
-          console.error('Email failed to send:', error);
+      const formData = {
+        name: form.current.from_name.value,
+        email: form.current.from_email.value,
+        message: form.current.message.value,
+      };
+
+      try {
+        const response = await fetch("http://localhost:5000/api/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         });
+
+        if (response.ok) {
+          setIsSubmitted(true);
+          setTimeout(() => navigate("/"), 2000); // Redirect after 2 seconds
+        } else {
+          console.error("Failed to send message");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
   return (
     <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600 min-h-screen flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-lg max-w-4xl w-full md:flex">
-        
-        {/* Image on the left */}
-        <div className="md:w-1/2">
-          <img 
-            src="https://img.freepik.com/free-vector/cute-man-working-computer-with-coffee-cartoon-vector-icon-illustration-people-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_138676-3868.jpg"  // Replace with your image URL
-            alt="Contact"
-            className="w-full h-full object-cover rounded-l-lg"
-          />
-        </div>
-
-        {/* Form on the right */}
         <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Contact Me</h2>
-          <p className="text-gray-600 text-center mb-4">
-            I'd love to hear from you! Please fill out the form below to get in touch.
-          </p>
+          <p className="text-gray-600 text-center mb-4">I'd love to hear from you!</p>
 
           {!isSubmitted ? (
-            <form ref={form} onSubmit={sendEmail}>
+            <form ref={form} onSubmit={sendMessage}>
               <div className="mb-4">
                 <label htmlFor="name" className="block text-gray-700">Name</label>
                 <input
                   type="text"
-                  name="from_name"       // This should match the template variable
+                  name="from_name" // Matches the backend variable
                   placeholder="Your Name"
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   required
@@ -66,7 +61,7 @@ const ContactMe: React.FC = () => {
                 <label htmlFor="email" className="block text-gray-700">Email</label>
                 <input
                   type="email"
-                  name="from_email"      // This should match the template variable
+                  name="from_email" // Matches the backend variable
                   placeholder="Your Email"
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   required
@@ -75,9 +70,8 @@ const ContactMe: React.FC = () => {
 
               <div className="mb-4">
                 <label htmlFor="message" className="block text-gray-700">Message</label>
-                <label htmlFor="message" className="block text-gray-700 font-serif">( * Please attach the link of your template)</label>
                 <textarea
-                  name="message"         // This should match the template variable
+                  name="message" // Matches the backend variable
                   rows={4}
                   placeholder="Your Message"
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"

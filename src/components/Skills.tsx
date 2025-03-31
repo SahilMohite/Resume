@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { FaReact, FaJs, FaHtml5, FaCss3Alt, FaGitAlt } from 'react-icons/fa';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import StatsSection from './StatsSection';
+
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -147,7 +147,7 @@ const Skills: React.FC = () => {
         </section>
         
       </div>
-      <StatsSection/>
+      
     </div>
     
   );
