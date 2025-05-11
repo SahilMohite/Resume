@@ -6,8 +6,8 @@ const Carousel: React.FC = () => {
 
   const images = [
     'https://marketplace.canva.com/EAFYC8yWXio/1/0/1600w/canva-green-minimalist-landscape-quote-desktop-wallpaper-OuM9mjCoT60.jpg',
-    'https://bestfreehtmlcsstemplates.com/uploads/templates-images/13ff21b90b362a19d4a1513f1b6222f2.webp',
-    'https://www.bookingpressplugin.com/wp-content/uploads/2024/01/Baker-Tilly.webp',
+    'https://wallpapercave.com/wp/wp7781719.jpg',
+    'https://i.imgur.com/mW0IqvT.jpg',
   ];
 
   React.useEffect(() => {
